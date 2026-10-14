@@ -1,0 +1,25 @@
+﻿# Python
+.venv/
+env/
+venv/
+__pycache__/
+*.pyc
+
+# Armazenamento e Ficheiros Pesados
+storage/caixas/*
+storage/extraidos/*
+storage/importacoes/*
+!storage/caixas/.gitkeep
+!storage/extraidos/.gitkeep
+!storage/importacoes/.gitkeep
+!storage/capas/.gitkeep
+
+# Base de Dados e Cache
+storage/*.db
+storage/*.db-journal
+
+# Sistema Operacional e IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

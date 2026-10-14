@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwitchVault — PlayStation 5</title>
+  <link rel="stylesheet" href="ps5.css?v=6.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ecrã de Inicialização (Boot Video) -->
+  <div id="bootScreen" class="boot-screen hidden">
+    <video id="bootVideo" src="boot_ps5.mp4" playsinline preload="auto"></video>
+  </div>
+
+  <!-- Fundo Cinemático Contínuo -->
+  <div id="ps5Backdrop" class="ps5-backdrop">
+    <div class="ps5-backdrop-overlay"></div>
+  </div>
+
+  <!-- Casca com Rolagem Vertical Suave -->
+  <div class="ps5-scroll-container">
+    <div class="ps5-content-wrapper">
+      
+      <!-- Topbar Oficial -->
+      <header class="ps5-topbar">
+        <div class="ps5-tab-nav">
+          <span class="shoulder-btn">L1</span>
+          <button class="nav-tab-item active" data-tab="games">Games</button>
+          <button class="nav-tab-item" data-tab="media">Media</button>
+          <span class="shoulder-btn">R1</span>
+        </div>
+
+        <div class="ps5-status-area">
+          <button id="btnSearchPS5" class="ps5-icon-action" title="Pesquisar Jogos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+
+          <button id="btnConfigPS5" class="ps5-icon-action" title="Definições da Consola">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+
+          <!-- Avatar -->
+          <div class="user-menu-wrapper">
+            <button id="userMenuBtnPS5" class="ps5-avatar-trigger" title="Mudar Plataforma">
+              <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&q=80" alt="Avatar PS5" class="avatar-ps5-img">
+              <span class="ps5-online-badge"></span>
+            </button>
+
+            <div id="platformDropdownPS5" class="ps5-dropdown-menu hidden">
+              <div class="ps5-dropdown-title">Mudar Consola</div>
+              <button class="ps5-dropdown-item" data-platform="switch">
+                <span class="p-dot dot-switch"></span> Nintendo Switch
+              </button>
+              <button class="ps5-dropdown-item active" data-platform="ps5">
+                <span class="p-dot dot-ps5"></span> PlayStation 5
+              </button>
+              <button class="ps5-dropdown-item" data-platform="xbox">
+                <span class="p-dot dot-xbox"></span> Xbox Series X
+              </button>
+              <button class="ps5-dropdown-item" data-platform="steam">
+                <span class="p-dot dot-steam"></span> Steam Deck
+              </button>
+            </div>
+          </div>
+
+          <!-- Relógio 24 Horas -->
+          <span id="ps5Clock" class="ps5-digital-clock">14:00</span>
+        </div>
+      </header>
+
+      <!-- Barra de Jogos Flutuante (Substituição da PS Store pela Ingestão de Jogos) -->
+      <section class="ps5-game-bar-wrapper">
+        <div class="ps5-tiles-row">
+          
+          <!-- Bloco 1: Importar / Compactar Backup (Substituindo a Loja) -->
+          <div id="tileImportPS5" class="ps-tile tile-import" data-type="import" title="Inserir / Compactar Novos Jogos">
+            <div class="ps-tile-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 3v3"></path>
+                <path d="M12 18v3"></path>
+              </svg>
+            </div>
+            <span class="ps-tile-label">Importar Jogos</span>
+          </div>
+
+          <!-- Bloco 2: Welcome Hub -->
+          <div id="welcomeTile" class="ps-tile tile-welcome focused" data-type="welcome" title="Welcome Hub">
+            <div class="ps-tile-box">
+              <div class="symbols-grid">
+                <span>△</span><span>○</span>
+                <span>✕</span><span>□</span>
+              </div>
+            </div>
+            <span class="ps-tile-label">Welcome</span>
+          </div>
+
+          <!-- Jogos Carregados da API -->
+          <div id="ps5DynamicTiles" class="dynamic-tiles-group"></div>
+
+          <!-- Bloco 3: Biblioteca -->
+          <div class="ps-tile tile-library" data-type="library" title="Sua Biblioteca">
+            <div class="ps-tile-box">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/>
+              </svg>
+            </div>
+            <span class="ps-tile-label">Game Library</span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Palco Inferior Dinâmico -->
+      <main class="ps5-viewport-stage">
+        
+        <!-- CENÁRIO A: WELCOME HUB BENTO GRID -->
+        <section id="welcomeView" class="view-panel active">
+          <div class="welcome-top-pill">
+            <div class="pill-badge-plus">
+              <span class="plus-symbol">+</span>
+              <span id="welcomePillText">Explore new monthly games</span>
+            </div>
+          </div>
+
+          <div class="ps5-bento-grid">
+            <!-- Coluna 1 -->
+            <div class="bento-col">
+              <div class="ps5-card card-friends">
+                <div class="card-head">
+                  <div class="card-title-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <strong>Online Friends</strong>
+                  </div>
+                  <div class="online-indicator"><span class="green-dot"></span> 6</div>
+                </div>
+                <div class="friends-avatars-row">
+                  <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&q=80" alt="F1">
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt="F2">
+                  <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&q=80" alt="F3">
+                  <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=80&q=80" alt="F4">
+                </div>
+                <p class="friends-names-sub">Jerry, MeanElf, pheme-a-, regilage_azur...</p>
+              </div>
+
+              <div class="ps5-card card-friend-activity">
+                <div class="activity-head">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                  </svg>
+                  <span>Friend Activity</span>
+                  <span class="trophy-gold-mini">🏆</span>
+                </div>
+                <div class="activity-row">
+                  <div class="activity-avatar-circle">🎮</div>
+                  <div class="activity-info">
+                    <strong>ARC Raiders</strong>
+                    <p>earned a gold trophy in ARC Raiders</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="ps5-card card-messages">
+                <div class="card-head">
+                  <div class="card-title-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <strong>Messages</strong>
+                  </div>
+                </div>
+                <p class="messages-text">No recent messages to show. Select to go to Game Base.</p>
+              </div>
+            </div>
+
+            <!-- Coluna 2 -->
+            <div class="bento-col col-center">
+              <div class="ps5-card card-recently-played">
+                <div class="recent-tag-badge">
+                  <div class="tag-title"><span class="icon-gp">🎮</span> Recently Played</div>
+                  <span class="tag-ago">16d ago</span>
+                </div>
+                <div class="recent-visual-wrapper">
+                  <img id="recentHeroImg" src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600&q=80" alt="Astro Bot">
+                  <div class="recent-visual-overlay"></div>
+                </div>
+                <div class="recent-content-pane">
+                  <h3 id="recentGameName">ASTRO BOT</h3>
+                  <div class="recent-specs">
+                    <div class="spec-row"><span>⏱️ Time played: Less than 1 hour</span></div>
+                    <div class="spec-row"><span>🎮 Sessions played: 1</span></div>
+                    <div class="spec-row"><span>🏆 Game progress: 11%</span></div>
+                  </div>
+                  <div class="trophy-pill-tag">
+                    <span>🏆</span>
+                    <strong>2 / 43</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Coluna 3 -->
+            <div class="bento-col">
+              <div class="ps5-card card-hardware">
+                <div class="hardware-slots">
+                  <div class="slot active">
+                    <div class="green-ring-ctrl">
+                      <span class="ctrl-num">1</span>
+                      <span class="ctrl-ic">🎮</span>
+                    </div>
+                  </div>
+                  <div class="slot empty"></div>
+                  <div class="slot empty"></div>
+                </div>
+              </div>
+
+              <div class="ps5-card card-trophies-summary">
+                <div class="card-head">
+                  <div class="card-title-icon">
+                    <span class="t-lead">🏆</span>
+                    <strong>Trophies</strong>
+                  </div>
+                  <span class="t-total-val">Total: 2681</span>
+                </div>
+                <div class="trophies-row">
+                  <div class="t-item"><span class="t-ico">💎</span><strong>23</strong></div>
+                  <div class="t-item"><span class="t-ico">🥇</span><strong>143</strong></div>
+                  <div class="t-item"><span class="t-ico">🥈</span><strong>431</strong></div>
+                  <div class="t-item"><span class="t-ico">🥉</span><strong>2k</strong></div>
+                </div>
+              </div>
+
+              <div class="ps5-card card-storage-ps5">
+                <div class="card-head">
+                  <div class="card-title-icon">
+                    <span class="st-lead">💾</span>
+                    <strong>Console Storage</strong>
+                  </div>
+                  <span class="info-ic">ⓘ</span>
+                </div>
+                <div class="storage-metrics-line">
+                  <span class="st-dot"></span>
+                  <span>Free space</span>
+                  <strong id="storageFreeText" class="st-val">17.41 GB</strong>
+                </div>
+                <div class="storage-bar">
+                  <div class="seg-games" style="width: 65%;"></div>
+                  <div class="seg-media" style="width: 15%;"></div>
+                  <div class="seg-system" style="width: 10%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CENÁRIO B: GAME HUB -->
+        <section id="gameHubView" class="view-panel view-gamehub">
+          <div class="gamehub-left">
+            <div class="gamehub-tags">
+              <span class="badge-ps5">PS5</span>
+              <span class="badge-sub">Full Game</span>
+            </div>
+            <h1 id="focusedGameTitle" class="gamehub-title">Nome do Jogo</h1>
+            <p id="focusedGameSub" class="gamehub-subtitle">Edição Vault</p>
+
+            <div class="gamehub-buttons">
+              <button id="btnPlayPrimary" class="btn-ps5-play">
+                <span>▶</span> Play Game
+              </button>
+              <button id="btnExtractSecondary" class="btn-ps5-secondary">
+                Descompactar (.7z)
+              </button>
+              <button id="btnMoreOptions" class="btn-ps5-circle" title="Opções">
+                <span>•••</span>
+              </button>
+            </div>
+            <div id="ps5ExtractFeedback" class="feedback-banner"></div>
+          </div>
+
+          <div class="gamehub-right">
+            <div class="activity-card-ps5">
+              <div class="activity-card-cover">
+                <img id="activityCardImg" src="" alt="Capa">
+                <div class="badge-corner">Full Game</div>
+                <div class="badge-price">Cofre Local</div>
+              </div>
+              <div class="activity-card-body">
+                <div class="activity-stats">
+                  <div><span>Progress</span><strong>0%</strong></div>
+                  <div><span>Earned</span><strong>0 / 27</strong></div>
+                </div>
+                <div class="activity-progress-bar">
+                  <div class="fill" style="width: 12%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL DE PESQUISA (LUPA) -->
+  <div id="searchModalPS5" class="ps5-modal-backdrop hidden">
+    <div class="ps5-modal-box modal-search-box">
+      <div class="search-box-header">
+        <div class="search-input-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" class="search-leading-icon">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="ps5SearchInput" placeholder="Pesquisar jogos, DLCs ou Title ID..." autocomplete="off">
+          <button id="btnClearSearch" class="search-clear-btn hidden">&times;</button>
+        </div>
+        <button id="btnCloseSearch" class="ps5-modal-close-btn">&times;</button>
+      </div>
+
+      <div class="search-categories-bar">
+        <button class="cat-chip active" data-category="todos">Todos</button>
+        <button class="cat-chip" data-category="Ação">Ação</button>
+        <button class="cat-chip" data-category="Aventura">Aventura</button>
+        <button class="cat-chip" data-category="RPG">RPG</button>
+        <button class="cat-chip" data-category="Corrida">Corrida</button>
+        <button class="cat-chip" data-category="Geral">Geral</button>
+      </div>
+
+      <div class="search-results-viewport">
+        <div id="searchResultsGrid" class="search-results-grid"></div>
+        <div id="searchEmptyFeedback" class="search-empty-hint hidden">
+          Nenhum jogo encontrado para esta busca.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE DEFINIÇÕES COM BOTÃO DE DESLIGAR -->
+  <div id="settingsModalPS5" class="ps5-modal-backdrop hidden">
+    <div class="ps5-modal-box modal-settings-box">
+      <div class="settings-modal-header">
+        <h2 class="settings-title">Definições da Consola</h2>
+        <button id="btnCloseSettings" class="ps5-modal-close-btn">&times;</button>
+      </div>
+      
+      <div class="settings-options-list">
+        <label class="setting-option-row">
+          <div>
+            <strong>Som de Navegação</strong>
+            <p>Efeitos sonoros nativos de interface do PlayStation 5</p>
+          </div>
+          <input type="checkbox" id="toggleSoundPS5" checked>
+        </label>
+        <label class="setting-option-row">
+          <div>
+            <strong>Transições Dinâmicas de Arte</strong>
+            <p>Exibe a Key Art do jogo em tela cheia ao focar no carrossel</p>
+          </div>
+          <input type="checkbox" id="toggleBackdropPS5" checked>
+        </label>
+      </div>
+
+      <div class="settings-power-footer">
+        <button id="btnPowerOffPS5" class="btn-power-off">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+            <line x1="12" y1="2" x2="12" y2="12"></line>
+          </svg>
+          <span>Desligar Consola / Sair da Aplicação</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE FICHA TÉCNICA E EXTRAÇÃO -->
+  <div id="gameModal" class="ps5-modal-backdrop hidden">
+    <div class="ps5-modal-box">
+      <button id="closeModalBtn" class="ps5-modal-close-btn">&times;</button>
+      <div class="modal-flex-layout">
+        <img id="modalCoverImg" src="" alt="Capa" class="modal-poster">
+        <div class="modal-meta-pane">
+          <div class="modal-pill-row">
+            <span class="badge-ps5">PLAYSTATION 5</span>
+            <span id="modalTitleId" class="modal-code">PPSA00000</span>
+          </div>
+          <h2 id="modalTitle" class="modal-heading">Nome do Jogo</h2>
+          <div class="modal-specs-strip">
+            <div>
+              <span class="spec-k">Pacote Sólido (.7z):</span>
+              <strong id="modalCompSize" class="spec-v">0 MB</strong>
+            </div>
+            <div>
+              <span class="spec-k">Compressão:</span>
+              <strong class="spec-v text-blue">7-Zip C++ (LZMA2)</strong>
+            </div>
+          </div>
+          <div class="modal-table-scroll">
+            <table class="ps5-specs-table">
+              <thead><tr><th>Tipo</th><th>Arquivo de Conteúdo</th><th>Tamanho Real</th></tr></thead>
+              <tbody id="modalFilesTbody"></tbody>
+            </table>
+          </div>
+          <button id="btnModalExtract" class="btn-ps5-play w-100">Iniciar Extração no Disco</button>
+          <div id="modalExtractFeedback" class="modal-feedback-text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../shared.js"></script>
+  <script src="ps5.js"></script>
+</body>
+</html>

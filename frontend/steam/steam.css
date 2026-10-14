@@ -1,0 +1,514 @@
+:root {
+  --steam-blue: #1a9fff;
+  --steam-blue-glow: rgba(26, 159, 255, 0.55);
+  --steam-bg: #0e141b;
+  --steam-card-bg: rgba(22, 32, 45, 0.82);
+  --steam-border: rgba(255, 255, 255, 0.12);
+  --steam-text: #ffffff;
+  --steam-text-dim: #8f98a0;
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--steam-bg);
+  color: var(--steam-text);
+  font-family: var(--font-family);
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Fundo Atmosférico SteamOS */
+.steam-backdrop {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center 20%;
+  transition: background-image 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 0;
+}
+
+.steam-backdrop-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 10%, transparent 0%, rgba(14, 20, 27, 0.5) 60%, rgba(14, 20, 27, 0.98) 100%),
+    linear-gradient(180deg, rgba(14, 20, 27, 0.4) 0%, rgba(14, 20, 27, 0.1) 25%, rgba(14, 20, 27, 0.85) 65%, #0e141b 100%);
+}
+
+/* ROLAGEM VERTICAL */
+.steam-scroll-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: calc(100vh - 46px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  scroll-behavior: smooth;
+}
+
+.steam-scroll-container::-webkit-scrollbar { width: 6px; }
+.steam-scroll-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+
+.steam-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 56px 48px 56px;
+  gap: 22px;
+}
+
+/* ============================================================
+   TOPBAR OFICIAL STEAM
+   ============================================================ */
+.steam-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+}
+
+.steam-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.steam-icon-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  opacity: 0.85;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.steam-icon-btn:hover { opacity: 1; transform: scale(1.1); }
+.steam-icon-btn svg { width: 22px; height: 22px; }
+
+.steam-clock {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Avatar Steam com Moldura */
+.user-menu-wrapper { position: relative; }
+.steam-avatar-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.steam-avatar-ring {
+  width: 38px;
+  height: 38px;
+  border-radius: 4px;
+  overflow: hidden;
+  padding: 2px;
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+}
+.steam-avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; display: block; }
+
+/* Dropdown de Plataformas */
+.steam-dropdown-menu {
+  position: absolute; top: 48px; right: 0; background: #16202d; border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px; padding: 6px; width: 210px; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.9);
+  display: flex; flex-direction: column; gap: 3px; z-index: 100;
+}
+.steam-dropdown-title { font-size: 0.7rem; color: var(--steam-text-dim); padding: 4px 8px; text-transform: uppercase; font-weight: 800; }
+.steam-dropdown-item {
+  background: transparent; border: none; color: #fff; padding: 10px 12px; border-radius: 6px;
+  font-size: 0.88rem; font-weight: 600; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px;
+}
+.steam-dropdown-item:hover, .steam-dropdown-item.active { background: rgba(255, 255, 255, 0.12); }
+.p-dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot-switch { background: #e60012; }
+.dot-ps5 { background: #0070d1; }
+.dot-xbox { background: #107c10; }
+.dot-steam { background: #1a9fff; }
+
+/* ============================================================
+   FAIXA 1: RECENT GAMES (HERO LANDSCAPE + POSTERS VERTICAIS)
+   ============================================================ */
+.steam-recent-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.steam-section-heading {
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.steam-tiles-track {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 8px 4px 12px 4px;
+}
+.steam-tiles-track::-webkit-scrollbar { display: none; }
+
+/* Hero Landscape (Primeiro Jogo - Star Wars Jedi Fallen Order no print) */
+.tile-hero {
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(340px, 34vw, 460px);
+  aspect-ratio: 16 / 9.2;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #151d26;
+  border: 2.5px solid transparent;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.65);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.tile-hero.focused {
+  border-color: #ffffff;
+  box-shadow: 0 0 20px var(--steam-blue-glow), 0 12px 28px rgba(0, 0, 0, 0.85);
+  transform: translateY(-4px);
+}
+.steam-tile-box { width: 100%; height: 100%; position: relative; }
+.steam-tile-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.steam-hero-gradient {
+  position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(14, 20, 27, 0.7) 100%);
+}
+
+/* Posters Verticais Oficiais Steam (2:3) */
+.steam-posters-group {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.steam-poster-tile {
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(120px, 12vw, 155px);
+  aspect-ratio: 2 / 3;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #17202b;
+  border: 2px solid transparent;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s ease;
+}
+.steam-poster-tile:hover, .steam-poster-tile.focused {
+  transform: translateY(-4px);
+  border-color: #ffffff;
+  box-shadow: 0 0 16px var(--steam-blue-glow);
+}
+.steam-poster-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.badge-new-library {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: #0070d1;
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 900;
+  padding: 2px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.02em;
+}
+
+/* Linha de Metadados Abaixo do Hero */
+.steam-hero-meta-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 2px;
+}
+.steam-hero-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+.steam-hero-subline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--steam-text-dim);
+}
+.play-triangle { font-size: 0.65rem; color: #10b981; }
+
+/* ============================================================
+   FAIXA 2: PÍLULAS DE NAVEGAÇÃO CENTRAL
+   ============================================================ */
+.steam-pills-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0;
+}
+
+.steam-nav-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--steam-text-dim);
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.steam-nav-pill:hover, .steam-nav-pill.active {
+  background: #3b4454;
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.friends-pill-counter {
+  background: #107c10;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.friends-pill-counter svg { width: 12px; height: 12px; }
+
+/* ============================================================
+   FAIXA 3: CARDS DE NOVIDADES & INGESTÃO
+   ============================================================ */
+.steam-news-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.steam-news-card {
+  position: relative;
+  background: var(--steam-card-bg);
+  border: 1px solid var(--steam-border);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.steam-news-card:hover {
+  transform: translateY(-3px);
+  border-color: #ffffff;
+}
+
+.news-category-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 3;
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: #1a9fff;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+.cat-update { color: #10b981; }
+.cat-dlc { color: #c084fc; }
+
+.news-thumb-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #121822;
+  overflow: hidden;
+}
+.news-thumb-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.news-action-art {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #162436 0%, #1e3550 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.news-action-art svg { width: 38px; height: 38px; color: var(--steam-blue); }
+
+.news-card-body {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.news-date { font-size: 0.68rem; color: var(--steam-text-dim); text-transform: uppercase; font-weight: 700; }
+.news-title { font-size: 0.88rem; font-weight: 800; color: #ffffff; line-height: 1.3; }
+
+/* ============================================================
+   RODAPÉ INFERIOR DO STEAM DECK / CONTROLLER
+   ============================================================ */
+.steam-footer-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 46px;
+  background: #090c10;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  z-index: 10;
+}
+
+.footer-hint-btn {
+  background: transparent;
+  border: none;
+  color: var(--steam-text-dim);
+  font-size: 0.82rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.btn-bubble-steam {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #000;
+  font-size: 0.72rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.footer-hint-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--steam-text-dim);
+}
+.btn-burger-icon { font-size: 1rem; color: #ffffff; }
+
+.btn-badge-action {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.badge-a { background: #107c10; color: #fff; }
+.badge-b { background: #dc2626; color: #fff; }
+
+/* MODAIS */
+.steam-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(16px);
+  display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 24px;
+}
+.steam-modal-box {
+  position: relative; background: #17212e; border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px; width: min(780px, 94vw); max-height: 85dvh; overflow-y: auto; padding: 26px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+}
+.modal-large { width: min(840px, 96vw); }
+.steam-modal-close {
+  position: absolute; top: 14px; right: 18px; background: transparent; border: none; font-size: 2rem; color: var(--steam-text-dim); cursor: pointer;
+}
+.steam-modal-close:hover { color: #fff; }
+
+/* PESQUISA */
+.search-head-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.search-field-wrapper { position: relative; flex-grow: 1; display: flex; align-items: center; }
+.search-field-wrapper svg { position: absolute; left: 14px; width: 20px; height: 20px; color: var(--steam-text-dim); }
+.search-field-wrapper input {
+  width: 100%; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px; padding: 12px 42px 12px 44px; color: #fff; font-size: 1rem; font-family: var(--font-family); outline: none;
+}
+.search-field-wrapper input:focus { border-color: var(--steam-blue); }
+.search-clear-btn { position: absolute; right: 12px; background: transparent; border: none; color: var(--steam-text-dim); font-size: 1.5rem; cursor: pointer; }
+
+.search-categories-row { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; }
+.st-cat-chip {
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); color: var(--steam-text-dim);
+  font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap;
+}
+.st-cat-chip:hover, .st-cat-chip.active { background: var(--steam-blue); color: #fff; border-color: var(--steam-blue); }
+
+.search-results-area { max-height: 50vh; overflow-y: auto; }
+.steam-search-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
+.search-item { cursor: pointer; transition: transform 0.2s ease; }
+.search-item:hover { transform: translateY(-4px); }
+.search-item img { width: 100%; aspect-ratio: 2 / 3; border-radius: 6px; object-fit: cover; }
+.search-item strong { display: block; font-size: 0.8rem; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.search-empty-text { text-align: center; padding: 36px 0; color: var(--steam-text-dim); }
+
+/* FICHA TÉCNICA */
+.modal-flex-split { display: flex; gap: 24px; }
+.modal-cover-art { width: clamp(150px, 18vw, 190px); aspect-ratio: 2 / 3; object-fit: cover; border-radius: 6px; }
+.modal-specs-area { flex-grow: 1; display: flex; flex-direction: column; gap: 10px; }
+.modal-badges { display: flex; gap: 8px; }
+.badge-deck-verified { background: #10b981; color: #fff; font-size: 0.68rem; font-weight: 900; padding: 2px 7px; border-radius: 3px; }
+.badge-mono { font-family: monospace; font-size: 0.72rem; background: rgba(255, 255, 255, 0.08); padding: 2px 6px; border-radius: 4px; }
+.modal-name { font-size: 1.5rem; font-weight: 800; }
+.modal-tech-strip { display: flex; gap: 20px; font-size: 0.82rem; }
+.dim { color: var(--steam-text-dim); margin-right: 4px; }
+.text-steam-blue { color: var(--steam-blue); }
+.modal-files-table-wrapper { max-height: 38vh; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; }
+.steam-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.steam-table th, .steam-table td { padding: 6px 10px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.steam-table th { color: var(--steam-text-dim); background: rgba(255, 255, 255, 0.03); }
+.btn-steam-play {
+  background: #2563eb; color: #fff; border: none; font-size: 0.92rem; font-weight: 800;
+  padding: 12px; border-radius: 6px; cursor: pointer;
+}
+.btn-steam-play:hover { background: #1d4ed8; }
+.w-100 { width: 100%; justify-content: center; margin-top: 4px; }
+.feedback-text { font-size: 0.85rem; font-weight: 700; margin-top: 4px; }
+
+/* BOOT SCREEN */
+.boot-screen {
+  position: fixed; inset: 0; background: #000; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease; cursor: pointer;
+}
+.boot-screen.fade-out { opacity: 0; visibility: hidden; }
+.boot-screen video { width: 100vw; height: 100vh; object-fit: cover; }
+
+.hidden { display: none !important; }

@@ -1,0 +1,404 @@
+:root {
+  --xbox-green: #107c10;
+  --xbox-green-light: #52b043;
+  --xbox-green-glow: rgba(82, 176, 67, 0.6);
+  --xbox-bg: #07090d;
+  --xbox-card-bg: rgba(18, 22, 30, 0.85);
+  --xbox-border: rgba(255, 255, 255, 0.1);
+  --xbox-text: #ffffff;
+  --xbox-text-dim: #9aa1b2;
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--xbox-bg);
+  color: var(--xbox-text);
+  font-family: var(--font-family);
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Fundo Cinemático com Arte Dinâmica */
+.xbox-backdrop {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center 25%;
+  transition: background-image 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 0;
+}
+
+.xbox-backdrop-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 20%, transparent 0%, rgba(7, 9, 13, 0.4) 60%, rgba(7, 9, 13, 0.95) 100%),
+    linear-gradient(180deg, rgba(7, 9, 13, 0.45) 0%, rgba(7, 9, 13, 0.2) 20%, rgba(7, 9, 13, 0.88) 60%, #07090d 95%);
+}
+
+/* Layout Principal Fixo Sem Cortes */
+.xbox-viewport-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100dvh;
+  padding: 24px 48px 30px 48px;
+}
+
+/* ============================================================
+   LINHA 1: TOPBAR OFICIAL XBOX
+   ============================================================ */
+.xbox-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+/* Perfil (Esquerda) */
+.xbox-profile-zone { position: relative; }
+
+.xbox-user-btn {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.xbox-avatar-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+.xbox-user-avatar { width: 100%; height: 100%; object-fit: cover; }
+
+.xbox-user-meta { display: flex; flex-direction: column; text-align: left; }
+.gtag-line { display: flex; align-items: center; gap: 6px; }
+.gamertag-name { font-size: 1rem; font-weight: 800; color: #fff; }
+.badge-sub-ultimate {
+  font-size: 0.62rem; font-weight: 900; background: #fff; color: #000; padding: 1px 5px; border-radius: 3px; letter-spacing: 0.04em;
+}
+
+.gamerscore-val { font-size: 0.78rem; font-weight: 700; color: var(--xbox-text-dim); display: flex; align-items: center; gap: 4px; margin-top: 1px; }
+.g-circle {
+  width: 13px; height: 13px; border-radius: 50%; border: 1.5px solid var(--xbox-green-light);
+  color: var(--xbox-green-light); font-size: 0.6rem; font-weight: 900; display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* Atalhos Centrais */
+.xbox-center-nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.xbox-nav-pill {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  opacity: 0.85;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  position: relative;
+}
+.xbox-nav-pill:hover { opacity: 1; transform: scale(1.1); }
+.xbox-nav-pill svg { width: 22px; height: 22px; }
+
+.gp-text-badge {
+  font-size: 0.72rem; font-weight: 900; letter-spacing: -0.01em; border: 1.5px solid #fff; padding: 2px 5px; border-radius: 4px;
+}
+
+.pill-settings { position: relative; }
+.setting-green-dot {
+  position: absolute; top: 4px; right: 4px; width: 6px; height: 6px; border-radius: 50%; background: var(--xbox-green-light);
+}
+
+/* Indicadores da Direita & Relógio 24h */
+.xbox-status-indicators {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.status-ic { width: 18px; height: 18px; color: var(--xbox-text-dim); }
+.xbox-digital-clock { font-size: 1.3rem; font-weight: 700; color: #ffffff; }
+
+/* Dropdown de Plataformas */
+.xbox-dropdown-menu {
+  position: absolute; top: 52px; left: 0; background: #171c26; border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px; padding: 6px; width: 220px; box-shadow: 0 18px 44px rgba(0, 0, 0, 0.85);
+  display: flex; flex-direction: column; gap: 4px; z-index: 100;
+}
+.xbox-dropdown-title { font-size: 0.7rem; color: var(--xbox-text-dim); padding: 4px 8px; text-transform: uppercase; font-weight: 800; }
+.xbox-dropdown-item {
+  background: transparent; border: none; color: #fff; padding: 10px 12px; border-radius: 6px;
+  font-size: 0.88rem; font-weight: 600; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px;
+}
+.xbox-dropdown-item:hover, .xbox-dropdown-item.active { background: rgba(255, 255, 255, 0.12); }
+.p-dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot-switch { background: #e60012; }
+.dot-ps5 { background: #0070d1; }
+.dot-xbox { background: #107c10; }
+.dot-steam { background: #1a9fff; }
+
+/* ============================================================
+   PALCO INFERIOR DO XBOX (JOGOS RECENTES + BENTO STRIP)
+   ============================================================ */
+.xbox-stage-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: auto;
+}
+
+/* FAIXA 1: LINHA DE JOGOS RECENTES */
+.xbox-recent-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  overflow: visible;
+}
+
+/* Bloco Hero Principal (Destaque do Starfield) */
+.xb-hero-tile {
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(140px, 14vw, 175px);
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 3.5px;
+  background: transparent;
+  /* Borda Verde Viva com Brilho do Xbox */
+  box-shadow: 0 0 0 3px var(--xbox-green-light), 0 0 24px var(--xbox-green-glow);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 20;
+}
+.xb-hero-tile:hover { transform: scale(1.04); }
+
+.xb-hero-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  background: #141724;
+}
+.xb-hero-inner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.xb-hero-title-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(14, 18, 24, 0.88);
+  padding: 8px 12px;
+  backdrop-filter: blur(8px);
+}
+.xb-hero-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* Faixa de Jogos Recentes Quadrados */
+.xb-recents-strip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 4px 6px 4px;
+}
+.xb-recents-strip::-webkit-scrollbar { display: none; }
+
+.xb-tile-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(90px, 9vw, 115px);
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #171c26;
+  border: 2px solid transparent;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s ease;
+}
+.xb-tile-thumb:hover, .xb-tile-thumb.focused {
+  transform: translateY(-4px) scale(1.05);
+  border-color: #ffffff;
+}
+.xb-tile-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* FAIXA 2: CARTÕES HORIZONTAIS OFICIAIS (4 Cartões Retangulares) */
+.xbox-bento-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.xb-bento-card {
+  position: relative;
+  aspect-ratio: 16 / 7.5;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #141822;
+  border: 2px solid transparent;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.xb-bento-card:hover {
+  transform: translateY(-3px);
+  border-color: #ffffff;
+}
+
+.bento-bg-art { position: absolute; inset: 0; }
+.bento-bg-art img { width: 100%; height: 100%; object-fit: cover; }
+.bento-art-overlay {
+  position: absolute; inset: 0; background: linear-gradient(180deg, transparent 20%, rgba(7, 9, 13, 0.92) 100%);
+}
+
+.bento-card-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+.bento-card-footer strong { font-size: 0.88rem; font-weight: 800; color: #fff; }
+.bento-ctrl-ic { width: 20px; height: 20px; color: #fff; }
+.gp-mini-badge {
+  font-size: 0.6rem; font-weight: 900; background: var(--xbox-green); color: #fff; padding: 2px 6px; border-radius: 3px;
+}
+
+/* Card de Importação */
+.import-mesh-art {
+  width: 100%; height: 100%; background: linear-gradient(135deg, #0e121a 0%, #171d2b 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.mesh-brush-ic { width: 36px; height: 36px; color: var(--xbox-green-light); opacity: 0.8; }
+
+/* MODAIS */
+.xbox-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(18px);
+  display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 24px;
+}
+.xbox-modal-box {
+  position: relative; background: #151922; border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 12px; width: min(780px, 94vw); max-height: 85dvh; overflow-y: auto; padding: 28px;
+}
+.modal-large { width: min(840px, 96vw); }
+.modal-settings { width: min(580px, 92vw); }
+.xbox-modal-close {
+  position: absolute; top: 16px; right: 18px; background: transparent; border: none; font-size: 2rem; color: var(--xbox-text-dim); cursor: pointer;
+}
+.xbox-modal-close:hover { color: #fff; }
+
+/* PESQUISA */
+.search-head-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.search-field-wrapper { position: relative; flex-grow: 1; display: flex; align-items: center; }
+.search-field-wrapper svg { position: absolute; left: 14px; width: 20px; height: 20px; color: var(--xbox-text-dim); }
+.search-field-wrapper input {
+  width: 100%; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px; padding: 12px 42px 12px 44px; color: #fff; font-size: 1rem; font-family: var(--font-family); outline: none;
+}
+.search-field-wrapper input:focus { border-color: var(--xbox-green-light); }
+.search-clear-btn { position: absolute; right: 12px; background: transparent; border: none; color: var(--xbox-text-dim); font-size: 1.5rem; cursor: pointer; }
+
+.search-categories-row { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 16px; }
+.xb-cat-chip {
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); color: var(--xbox-text-dim);
+  font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 20px; cursor: pointer; white-space: nowrap;
+}
+.xb-cat-chip:hover, .xb-cat-chip.active { background: var(--xbox-green); color: #fff; border-color: var(--xbox-green); }
+
+.search-results-area { max-height: 50vh; overflow-y: auto; }
+.xbox-search-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
+.search-item { cursor: pointer; transition: transform 0.2s ease; }
+.search-item:hover { transform: translateY(-4px); }
+.search-item img { width: 100%; aspect-ratio: 1 / 1; border-radius: 8px; object-fit: cover; }
+.search-item strong { display: block; font-size: 0.8rem; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.search-empty-text { text-align: center; padding: 36px 0; color: var(--xbox-text-dim); }
+
+/* DEFINIÇÕES & POWER */
+.settings-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.settings-stack { display: flex; flex-direction: column; gap: 12px; }
+.setting-item {
+  display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.04);
+  padding: 14px 18px; border-radius: 8px; cursor: pointer;
+}
+.setting-item strong { font-size: 0.92rem; display: block; margin-bottom: 2px; }
+.setting-item p { font-size: 0.75rem; color: var(--xbox-text-dim); }
+
+.settings-power-zone { margin-top: 14px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.btn-power-xbox {
+  width: 100%; background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.4);
+  color: #ff5e62; font-size: 0.92rem; font-weight: 800; padding: 13px; border-radius: 8px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-power-xbox:hover { background: rgba(239, 68, 68, 0.3); }
+.btn-power-xbox svg { width: 20px; height: 20px; }
+
+/* FICHA TÉCNICA */
+.modal-flex-split { display: flex; gap: 24px; }
+.modal-cover-art { width: clamp(150px, 18vw, 190px); aspect-ratio: 1 / 1; object-fit: cover; border-radius: 10px; }
+.modal-specs-area { flex-grow: 1; display: flex; flex-direction: column; gap: 10px; }
+.modal-badges { display: flex; gap: 8px; }
+.badge-series-x { background: #fff; color: #000; font-size: 0.7rem; font-weight: 900; padding: 2px 7px; border-radius: 3px; }
+.badge-mono { font-family: monospace; font-size: 0.72rem; background: rgba(255, 255, 255, 0.08); padding: 2px 6px; border-radius: 4px; }
+.modal-name { font-size: 1.5rem; font-weight: 800; }
+.modal-tech-strip { display: flex; gap: 20px; font-size: 0.82rem; }
+.dim { color: var(--xbox-text-dim); margin-right: 4px; }
+.text-green { color: var(--xbox-green-light); }
+.modal-files-table-wrapper { max-height: 38vh; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; }
+.xbox-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.xbox-table th, .xbox-table td { padding: 6px 10px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.xbox-table th { color: var(--xbox-text-dim); background: rgba(255, 255, 255, 0.03); }
+.btn-xb-extract {
+  background: var(--xbox-green); color: #fff; border: none; font-size: 0.92rem; font-weight: 800;
+  padding: 12px; border-radius: 8px; cursor: pointer;
+}
+.btn-xb-extract:hover { background: var(--xbox-green-light); }
+.w-100 { width: 100%; justify-content: center; margin-top: 4px; }
+.feedback-text { font-size: 0.85rem; font-weight: 700; margin-top: 4px; }
+
+/* BOOT SCREEN */
+.boot-screen {
+  position: fixed; inset: 0; background: #000; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease; cursor: pointer;
+}
+.boot-screen.fade-out { opacity: 0; visibility: hidden; }
+.boot-screen video { width: 100vw; height: 100vh; object-fit: cover; }
+
+.hidden { display: none !important; }

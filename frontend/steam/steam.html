@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwitchVault — Steam Deck / Big Picture</title>
+  <link rel="stylesheet" href="steam.css?v=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ecrã de Inicialização (Boot Video) -->
+  <div id="bootScreen" class="boot-screen hidden">
+    <video id="bootVideo" src="boot_steam.mp4" playsinline preload="auto"></video>
+  </div>
+
+  <!-- Fundo Atmosférico SteamOS -->
+  <div id="steamBackdrop" class="steam-backdrop">
+    <div class="steam-backdrop-overlay"></div>
+  </div>
+
+  <!-- Casca Principal com Deslocamento Vertical -->
+  <div class="steam-scroll-container">
+    <div class="steam-content-wrapper">
+
+      <!-- TOPBAR OFICIAL STEAM BIG PICTURE -->
+      <header class="steam-topbar">
+        <div class="steam-topbar-left">
+          <!-- Espaço reservado para manter o alinhamento da UI -->
+        </div>
+
+        <div class="steam-topbar-right">
+          <!-- Botão Pesquisar (Lupa) -->
+          <button id="btnSearchSteam" class="steam-icon-btn" title="Pesquisar Biblioteca">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+
+          <!-- Ícone de Rede / Globo -->
+          <button class="steam-icon-btn" title="Estado da Rede Local">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </button>
+
+          <!-- Relógio 24 Horas -->
+          <span id="steamClock" class="steam-clock">20:25</span>
+
+          <!-- Perfil do Utilizador com Moldura Luminosa (Mudar Consola) -->
+          <div class="user-menu-wrapper">
+            <button id="userMenuBtnSteam" class="steam-avatar-btn" title="Alternar Consola">
+              <div class="steam-avatar-ring">
+                <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&q=80" alt="Avatar" class="steam-avatar-img">
+              </div>
+            </button>
+
+            <!-- Dropdown de Plataformas -->
+            <div id="platformDropdownSteam" class="steam-dropdown-menu hidden">
+              <div class="steam-dropdown-title">Mudar Consola</div>
+              <button class="steam-dropdown-item" data-platform="switch">
+                <span class="p-dot dot-switch"></span> Nintendo Switch
+              </button>
+              <button class="steam-dropdown-item" data-platform="ps5">
+                <span class="p-dot dot-ps5"></span> PlayStation 5
+              </button>
+              <button class="steam-dropdown-item" data-platform="xbox">
+                <span class="p-dot dot-xbox"></span> Xbox Series X
+              </button>
+              <button class="steam-dropdown-item active" data-platform="steam">
+                <span class="p-dot dot-steam"></span> Steam Deck
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- FAIXA 1: RECENT GAMES -->
+      <section class="steam-recent-section">
+        <h1 class="steam-section-heading">Recent Games</h1>
+
+        <div class="steam-tiles-track">
+          <!-- Bloco Principal / Hero Alargado Panorâmico -->
+          <div id="steamHeroTile" class="steam-tile tile-hero focused" title="Jogo em Destaque">
+            <div class="steam-tile-box">
+              <img id="steamHeroImg" src="" alt="Hero Game">
+              <div class="steam-hero-gradient"></div>
+            </div>
+          </div>
+
+          <!-- Jogos Recentes em Cartaz Vertical (Carregados da API) -->
+          <div id="steamDynamicTiles" class="steam-posters-group"></div>
+        </div>
+
+        <!-- Título e Estatísticas do Jogo Focado -->
+        <div class="steam-hero-meta-bar">
+          <h2 id="steamHeroTitle" class="steam-hero-title">STAR WARS Jedi: Fallen Order™</h2>
+          <div class="steam-hero-subline">
+            <span class="play-triangle">▶</span>
+            <span id="steamHeroTimeText">ÚLTIMAS DUAS SEMANAS: 3 MIN</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAIXA 2: PÍLULAS DE NAVEGAÇÃO CENTRAL -->
+      <div class="steam-pills-bar">
+        <button class="steam-nav-pill active" data-tab="news">WHAT'S NEW</button>
+        <button class="steam-nav-pill" data-tab="friends">
+          <span>AMIGOS</span>
+          <span class="friends-pill-counter">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            10
+          </span>
+        </button>
+        <button class="steam-nav-pill" data-tab="recommended">RECOMMENDED</button>
+      </div>
+
+      <!-- FAIXA 3: CARDS DE NOVIDADES & INGESTÃO 7-ZIP -->
+      <section class="steam-news-grid">
+        <!-- Cartão 1: Importar Jogos com 7-Zip -->
+        <div id="cardImportSteam" class="steam-news-card card-action-import" title="Escanear e Empacotar ROMs">
+          <span class="news-category-badge cat-update">VAULT INGESTION</span>
+          <div class="news-thumb-wrapper">
+            <div class="news-action-art">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+          </div>
+          <div class="news-card-body">
+            <span class="news-date">COMPRESSÃO LZMA2 SÓLIDA</span>
+            <strong id="importStatusLabel" class="news-title">Importar Jogos para o Cofre Steam</strong>
+          </div>
+        </div>
+
+        <!-- Cartão 2: Stellaris Update -->
+        <div class="steam-news-card">
+          <span class="news-category-badge">NEWS</span>
+          <div class="news-thumb-wrapper">
+            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500&q=80" alt="Stellaris">
+          </div>
+          <div class="news-card-body">
+            <span class="news-date">PUBLICADO Quinta-feira, 27 de Outubro</span>
+            <strong class="news-title">Stellaris: Dev Diary #273 — A Peek Into the Future</strong>
+          </div>
+        </div>
+
+        <!-- Cartão 3: Rust Community Update -->
+        <div class="steam-news-card">
+          <span class="news-category-badge">NEWS</span>
+          <div class="news-thumb-wrapper">
+            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&q=80" alt="Rust">
+          </div>
+          <div class="news-card-body">
+            <span class="news-date">PUBLICADO Quinta-feira, 27 de Outubro</span>
+            <strong class="news-title">RUST: Community Update 247</strong>
+          </div>
+        </div>
+
+        <!-- Cartão 4: Integridade do Armazenamento -->
+        <div class="steam-news-card">
+          <span class="news-category-badge cat-dlc">STORAGE HEALTH</span>
+          <div class="news-thumb-wrapper">
+            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500&q=80" alt="Vault Stats">
+          </div>
+          <div class="news-card-body">
+            <span class="news-date">AUDITORIA LOCAL SHA-256</span>
+            <strong class="news-title">Integridade do Disco Verificada (100% Saudável)</strong>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- RODAPÉ CLÁSSICO DO STEAM DECK / CONTROLLER -->
+  <footer class="steam-footer-bar">
+    <div class="footer-left">
+      <button class="footer-hint-btn">
+        <span class="btn-bubble-steam">✕</span>
+        <span>MENU</span>
+      </button>
+    </div>
+
+    <div class="footer-right">
+      <div class="footer-hint-item">
+        <span class="btn-burger-icon">☰</span>
+        <span>OPÇÕES</span>
+      </div>
+      <div class="footer-hint-item">
+        <span class="btn-badge-action badge-a">A</span>
+        <span>SELECIONAR</span>
+      </div>
+      <div class="footer-hint-item">
+        <span class="btn-badge-action badge-b">B</span>
+        <span>VOLTAR</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL DE PESQUISA (LUPA COM FILTROS) -->
+  <div id="searchModalSteam" class="steam-modal-backdrop hidden">
+    <div class="steam-modal-box">
+      <div class="search-head-row">
+        <div class="search-field-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="steamSearchInput" placeholder="Pesquisar títulos ou AppID da Steam..." autocomplete="off">
+          <button id="btnClearSearchSteam" class="search-clear-btn hidden">&times;</button>
+        </div>
+        <button id="btnCloseSearchSteam" class="steam-modal-close">&times;</button>
+      </div>
+
+      <div class="search-categories-row">
+        <button class="st-cat-chip active" data-category="todos">Todos</button>
+        <button class="st-cat-chip" data-category="Ação">Ação</button>
+        <button class="st-cat-chip" data-category="Aventura">Aventura</button>
+        <button class="st-cat-chip" data-category="RPG">RPG</button>
+        <button class="st-cat-chip" data-category="Estratégia">Estratégia</button>
+        <button class="st-cat-chip" data-category="Geral">Geral</button>
+      </div>
+
+      <div class="search-results-area">
+        <div id="steamSearchResultsGrid" class="steam-search-grid"></div>
+        <div id="steamSearchEmpty" class="search-empty-text hidden">Nenhum título encontrado na biblioteca.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE FICHA TÉCNICA E EXTRAÇÃO -->
+  <div id="gameModal" class="steam-modal-backdrop hidden">
+    <div class="steam-modal-box modal-large">
+      <button id="closeModalBtn" class="steam-modal-close">&times;</button>
+      <div class="modal-flex-split">
+        <img id="modalCoverImg" src="" alt="Capa" class="modal-cover-art">
+        <div class="modal-specs-area">
+          <div class="modal-badges">
+            <span class="badge-deck-verified">DECK VERIFIED</span>
+            <span id="modalTitleId" class="badge-mono">STEAM_0000</span>
+          </div>
+          <h2 id="modalTitle" class="modal-name">Nome do Jogo</h2>
+          <div class="modal-tech-strip">
+            <div>
+              <span class="dim">Pacote .7z Sólido:</span>
+              <strong id="modalCompSize">0 MB</strong>
+            </div>
+            <div>
+              <span class="dim">Compressão:</span>
+              <strong class="text-steam-blue">7-Zip C++ (LZMA2)</strong>
+            </div>
+          </div>
+          <div class="modal-files-table-wrapper">
+            <table class="steam-table">
+              <thead><tr><th>Tipo</th><th>Ficheiro</th><th>Tamanho Real</th></tr></thead>
+              <tbody id="modalFilesTbody"></tbody>
+            </table>
+          </div>
+          <button id="btnModalExtract" class="btn-steam-play w-100">Iniciar Extração no Disco</button>
+          <div id="modalExtractFeedback" class="feedback-text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../shared.js"></script>
+  <script src="steam.js"></script>
+</body>
+</html>

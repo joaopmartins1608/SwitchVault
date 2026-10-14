@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwitchVault — Nintendo Switch OS</title>
+  <link rel="stylesheet" href="switch.css?v=2.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ecrã de Inicialização (Boot Video) -->
+  <div id="bootScreen" class="boot-screen hidden">
+    <video id="bootVideo" src="boot_switch.mp4" playsinline preload="auto"></video>
+  </div>
+
+  <div class="switch-os-bg"></div>
+
+  <div class="horizon-layout">
+    <!-- Topbar Oficial -->
+    <header class="horizon-topbar">
+      <div class="profile-area">
+        <button id="userMenuBtn" class="horizon-avatar-btn" title="Alternar Plataforma">
+          <div class="avatar-ring">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=SwitchVault" alt="Avatar">
+          </div>
+          <span class="user-pill-tag">SwitchVault</span>
+        </button>
+
+        <div id="platformDropdown" class="horizon-dropdown hidden">
+          <div class="dropdown-header">Alternar Consola</div>
+          <button class="platform-select-btn active" data-platform="switch">
+            <span class="dot-sw"></span> Nintendo Switch
+          </button>
+          <button class="platform-select-btn" data-platform="ps5">
+            <span class="dot-ps"></span> PlayStation 5
+          </button>
+          <button class="platform-select-btn" data-platform="xbox">
+            <span class="dot-xb"></span> Xbox Series X
+          </button>
+          <button class="platform-select-btn" data-platform="steam">
+            <span class="dot-st"></span> Steam Deck
+          </button>
+        </div>
+      </div>
+
+      <!-- Relógio Digital 24 Horas -->
+      <div class="clock-area">
+        <span id="horizonClock" class="horizon-clock">14:00</span>
+      </div>
+    </header>
+
+    <!-- Prateleira Central Horizontal -->
+    <main class="horizon-stage">
+      <div class="shelf-wrapper" id="switchShelfWrapper">
+        <div id="gamesTrack" class="horizon-carousel"></div>
+      </div>
+
+      <div id="emptyState" class="empty-horizon-state hidden">
+        <h2>Nenhum jogo no cofre</h2>
+        <p>Coloque as suas ROMs em <code>storage/importacoes/switch/</code> e use o <strong>SD Card</strong> abaixo.</p>
+      </div>
+    </main>
+
+    <!-- Barra Inferior Oficial do Switch com a Lupa Adicionada -->
+    <footer class="horizon-dock-section">
+      <div class="floating-capsule">
+        
+        <!-- 1. Lupa de Pesquisa -->
+        <button id="btnLupaSwitch" class="capsule-circle-btn" data-label="Pesquisar Jogos" title="Buscar no Cofre">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <!-- 2. Folha / Lista -->
+        <button id="btnLista" class="capsule-circle-btn" data-label="Lista de Jogos & Armazenamento" title="Métricas de Arquivos">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+        </button>
+
+        <!-- 3. SD Card -->
+        <button id="btnSDCard" class="capsule-circle-btn" data-label="Inserir Jogos (SD Card)" title="Importar ROMs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <path d="M6 2h9l5 5v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"></path>
+            <line x1="9" y1="6" x2="9" y2="9"></line>
+            <line x1="12" y1="6" x2="12" y2="9"></line>
+            <line x1="15" y1="6" x2="15" y2="9"></line>
+          </svg>
+        </button>
+
+        <!-- 4. Definições -->
+        <button id="btnConfig" class="capsule-circle-btn" data-label="Definições da Consola" title="Opções do Sistema">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+
+        <!-- 5. Desligar -->
+        <button id="btnPower" class="capsule-circle-btn" data-label="Modo de Suspensão / Sair" title="Encerrar SwitchVault">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+            <line x1="12" y1="2" x2="12" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div id="capsuleActiveLabel" class="capsule-subtext">Pesquisar Jogos</div>
+
+      <div class="horizon-bottom-hints">
+        <div class="hint-switch-logo">
+          <svg viewBox="0 0 32 32" fill="currentColor">
+            <path d="M12.5 4H7.2C4.3 4 2 6.3 2 9.2v13.5C2 25.7 4.3 28 7.2 28h5.3V4zm-3.5 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm15.8-9h-5.3v24h5.3c2.9 0 5.2-2.3 5.2-5.2V9.2C30 6.3 27.7 4 24.8 4zM23 20a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+          </svg>
+        </div>
+        <div class="hint-action">
+          <span class="btn-circle-hint">A</span>
+          <span>OK</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- MODAL DE PESQUISA DO SWITCH -->
+  <div id="searchModalSwitch" class="horizon-modal-backdrop hidden">
+    <div class="horizon-modal-box">
+      <button id="btnCloseSearchSwitch" class="horizon-modal-close">&times;</button>
+      <h2 class="modal-header-title">Pesquisar Títulos</h2>
+      <div class="switch-search-row">
+        <input type="text" id="switchSearchInput" placeholder="Digite o título ou Title ID..." autocomplete="off">
+      </div>
+      <div id="switchSearchResults" class="switch-results-track"></div>
+    </div>
+  </div>
+
+  <!-- MODAL FICHA TÉCNICA -->
+  <div id="gameModal" class="horizon-modal-backdrop hidden">
+    <div class="horizon-modal-box">
+      <button id="closeModalBtn" class="horizon-modal-close">&times;</button>
+      <div class="modal-inner-grid">
+        <img id="modalCoverImg" src="" alt="Capa" class="modal-cover-square">
+        <div class="modal-meta-content">
+          <h2 id="modalGameTitle" class="modal-game-title">Título</h2>
+          <div class="modal-badges-group">
+            <span class="pill-badge pill-red">NSW</span>
+            <span id="modalTitleIdTag" class="pill-badge pill-mono">0100000000000000</span>
+          </div>
+          <div class="modal-stat-line">
+            <span>Caixa Sólida (.7z):</span>
+            <strong id="modalCompSize" class="text-cyan">0 MB</strong>
+          </div>
+          <div class="modal-table-scroll">
+            <table class="horizon-table">
+              <thead><tr><th>Tipo</th><th>Ficheiro</th><th>Tamanho Original</th></tr></thead>
+              <tbody id="modalFilesTbody"></tbody>
+            </table>
+          </div>
+          <button id="extractBtn" class="horizon-action-btn">Descompactar para Transferência</button>
+          <div id="extractFeedback" class="feedback-text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL LISTA DE ARMAZENAMENTO -->
+  <div id="specsListModal" class="horizon-modal-backdrop hidden">
+    <div class="horizon-modal-box modal-wide">
+      <button id="closeSpecsBtn" class="horizon-modal-close">&times;</button>
+      <h2 class="modal-header-title">Especificações de Armazenamento</h2>
+      <div class="modal-table-scroll">
+        <table class="horizon-table">
+          <thead>
+            <tr>
+              <th>Plataforma</th>
+              <th>Título do Jogo</th>
+              <th>Title ID</th>
+              <th>Tamanho Compactado (.7z)</th>
+              <th>Tamanho Original</th>
+              <th>Espaço Poupado</th>
+            </tr>
+          </thead>
+          <tbody id="specsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DEFINIÇÕES -->
+  <div id="settingsModal" class="horizon-modal-backdrop hidden">
+    <div class="horizon-modal-box">
+      <button id="closeSettingsBtn" class="horizon-modal-close">&times;</button>
+      <h2 class="modal-header-title">Definições da Consola</h2>
+      <div class="settings-items-stack">
+        <label class="setting-row">
+          <div>
+            <strong>Som de Navegação</strong>
+            <p>Emite o clique sonoro oficial do Horizon OS ao focar cartões</p>
+          </div>
+          <input type="checkbox" id="toggleSound" checked>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <script src="../shared.js"></script>
+  <script src="switch.js"></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+:root {
+  --horizon-bg: #2d2d2d;
+  --horizon-card-bg: #383838;
+  --horizon-text: #ebebeb;
+  --horizon-sub: #8e8e8e;
+  --horizon-cyan: #00d2ff;
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Rajdhani', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%; overflow: hidden;
+  background-color: var(--horizon-bg); color: var(--horizon-text);
+  font-family: var(--font-family); user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.switch-os-bg {
+  position: fixed; inset: 0;
+  background: radial-gradient(circle at 50% 45%, #35383f 0%, #25272c 75%, #1e2024 100%);
+  z-index: 0;
+}
+
+.horizon-layout {
+  position: relative; z-index: 1; display: flex; flex-direction: column;
+  height: 100dvh; justify-content: space-between; padding: 24px 48px 18px 48px;
+}
+
+.horizon-topbar { display: flex; align-items: center; justify-content: space-between; height: 48px; flex-shrink: 0; }
+.profile-area { position: relative; }
+.horizon-avatar-btn { background: transparent; border: none; display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 2px; }
+.avatar-ring { width: 44px; height: 44px; border-radius: 50%; background: #fff; padding: 2px; }
+.avatar-ring img { width: 100%; height: 100%; border-radius: 50%; display: block; }
+.user-pill-tag { font-size: 0.95rem; font-weight: 700; color: #fff; }
+.horizon-clock { font-size: 1.5rem; font-weight: 700; color: #fff; font-family: var(--font-display); }
+
+.horizon-dropdown {
+  position: absolute; top: 54px; left: 0; background: #1c1e24; border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px; padding: 8px; width: 220px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85);
+  display: flex; flex-direction: column; gap: 4px; z-index: 100;
+}
+.dropdown-header { font-size: 0.72rem; color: var(--horizon-sub); padding: 6px 10px; text-transform: uppercase; font-weight: 800; }
+.platform-select-btn {
+  background: transparent; border: none; color: #fff; padding: 10px 12px; border-radius: 8px;
+  font-size: 0.88rem; font-weight: 600; text-align: left; cursor: pointer; display: flex; align-items: center; gap: 10px;
+}
+.platform-select-btn:hover, .platform-select-btn.active { background: rgba(255, 255, 255, 0.12); }
+.dot-sw { width: 8px; height: 8px; border-radius: 50%; background: #e60012; }
+.dot-ps { width: 8px; height: 8px; border-radius: 50%; background: #0070d1; }
+.dot-xb { width: 8px; height: 8px; border-radius: 50%; background: #107c10; }
+.dot-st { width: 8px; height: 8px; border-radius: 50%; background: #1a9fff; }
+
+/* PALCO: CARROSSEL HORIZONTAL REAL */
+.horizon-stage { display: flex; align-items: center; flex-grow: 1; min-height: 0; padding: 10px 0; }
+.shelf-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding: 24px 10px;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+.shelf-wrapper::-webkit-scrollbar { display: none; }
+.horizon-carousel { display: flex; gap: 24px; align-items: center; }
+
+/* Cartão do Jogo */
+.horizon-card {
+  position: relative; flex-shrink: 0; width: clamp(200px, 25vh, 270px); aspect-ratio: 1 / 1;
+  border-radius: 14px; cursor: pointer; transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex; align-items: center; justify-content: center;
+}
+.horizon-card::before {
+  content: ''; position: absolute; inset: -5px; border-radius: 18px; padding: 3.5px;
+  background: linear-gradient(145deg, #00e5ff 0%, #38bdf8 35%, #a855f7 70%, #ec4899 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none; opacity: 0; transition: opacity 0.2s ease; z-index: 3;
+}
+.horizon-card.focused { transform: translateY(-8px) scale(1.045); }
+.horizon-card.focused::before { opacity: 1; filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.7)); }
+.horizon-card-inner {
+  position: relative; z-index: 2; width: 100%; height: 100%; border-radius: 12px;
+  overflow: hidden; background: var(--horizon-card-bg); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.55);
+}
+.horizon-card-inner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.playing-badge {
+  position: absolute; bottom: 8px; left: 8px; background: rgba(14, 16, 20, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.22); padding: 4px 10px; border-radius: 20px;
+  font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; gap: 6px;
+}
+.playing-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #00ff88; }
+
+/* DOCK INFERIOR */
+.horizon-dock-section { display: flex; flex-direction: column; align-items: center; position: relative; padding-bottom: 8px; }
+.floating-capsule {
+  display: flex; align-items: center; gap: 16px; background: rgba(42, 44, 52, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 22px; border-radius: 50px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55); backdrop-filter: blur(18px);
+}
+.capsule-circle-btn {
+  position: relative; width: 50px; height: 50px; border-radius: 50%; background: #32353e;
+  border: none; color: #ffffff; display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.capsule-circle-btn svg { width: 22px; height: 22px; position: relative; z-index: 2; }
+.capsule-circle-btn::before {
+  content: ''; position: absolute; inset: -4px; border-radius: 50%; padding: 3px;
+  background: linear-gradient(145deg, #00e5ff 0%, #38bdf8 35%, #c084fc 70%, #f472b6 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none; opacity: 0; transition: opacity 0.2s ease; z-index: 3;
+}
+.capsule-circle-btn:hover, .capsule-circle-btn.focused { transform: scale(1.1); }
+.capsule-circle-btn:hover::before, .capsule-circle-btn.focused::before { opacity: 1; filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.7)); }
+.capsule-subtext { font-size: 0.85rem; font-weight: 700; color: var(--horizon-cyan); margin-top: 8px; height: 18px; }
+
+.horizon-bottom-hints {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  margin-top: 6px; color: var(--horizon-sub); font-size: 0.85rem; font-weight: 600;
+}
+.hint-switch-logo svg { width: 26px; height: 26px; opacity: 0.75; }
+.hint-action { display: flex; align-items: center; gap: 6px; }
+.btn-circle-hint { width: 20px; height: 20px; border-radius: 50%; background: #fff; color: #000; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.72rem; }
+
+/* MODAL DE PESQUISA DO SWITCH */
+.switch-search-row { margin: 16px 0; }
+.switch-search-row input {
+  width: 100%; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px; padding: 12px 16px; color: #fff; font-size: 1rem; outline: none; font-family: var(--font-family);
+}
+.switch-search-row input:focus { border-color: var(--horizon-cyan); }
+.switch-results-track { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 14px; max-height: 48vh; overflow-y: auto; }
+.switch-search-item { cursor: pointer; text-align: center; }
+.switch-search-item img { width: 100%; aspect-ratio: 1 / 1; border-radius: 10px; object-fit: cover; }
+.switch-search-item strong { display: block; font-size: 0.8rem; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* MODAIS GERAIS */
+.horizon-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(16px);
+  display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+}
+.horizon-modal-box {
+  position: relative; background: #242730; border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px; width: min(820px, 94vw); max-height: 85dvh; overflow-y: auto; padding: 32px;
+}
+.modal-wide { width: min(940px, 96vw); }
+.horizon-modal-close { position: absolute; top: 14px; right: 18px; background: transparent; border: none; font-size: 2rem; color: var(--horizon-sub); cursor: pointer; }
+.modal-inner-grid { display: flex; gap: 28px; }
+.modal-cover-square { width: clamp(160px, 20vw, 210px); aspect-ratio: 1 / 1; object-fit: cover; border-radius: 12px; }
+.modal-meta-content { flex-grow: 1; display: flex; flex-direction: column; gap: 12px; }
+.modal-game-title { font-size: 1.6rem; font-weight: 800; }
+.modal-badges-group { display: flex; gap: 8px; }
+.pill-badge { padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 700; }
+.pill-red { background: #e60012; color: #fff; }
+.pill-mono { background: rgba(255, 255, 255, 0.08); font-family: monospace; color: var(--horizon-sub); }
+.modal-stat-line { font-size: 0.9rem; color: var(--horizon-sub); }
+.text-cyan { color: var(--horizon-cyan); }
+.modal-table-scroll { max-height: 48vh; overflow-y: auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; margin-top: 6px; }
+.horizon-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.horizon-table th, .horizon-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.horizon-table th { color: var(--horizon-sub); background: rgba(255, 255, 255, 0.03); }
+.horizon-action-btn { background: var(--horizon-cyan); color: #000; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 800; cursor: pointer; }
+.feedback-text { font-size: 0.85rem; font-weight: 600; margin-top: 6px; }
+.modal-header-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; }
+.settings-items-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.setting-row { display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.04); padding: 14px 18px; border-radius: 8px; cursor: pointer; }
+
+/* BOOT */
+.boot-screen {
+  position: fixed; inset: 0; background: #000; z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease; cursor: pointer;
+}
+.boot-screen.fade-out { opacity: 0; visibility: hidden; }
+.boot-screen video { width: 100vw; height: 100vh; object-fit: cover; }
+.hidden { display: none !important; }
